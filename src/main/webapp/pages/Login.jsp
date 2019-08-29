@@ -37,7 +37,7 @@
 	<script type="text/javascript" src="resources/js/lrscroll_1.js"></script>
     
     
-<title>尤洪</title>
+<title>登陆</title>
 </head>
 <body>  
 <!--Begin Header Begin-->
