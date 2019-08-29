@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--扫描service-->
+    <context:component-scan base-package="cn.xdd.service"/>
+
+
+    <!--引入数据库信息文件，并配置数据源-->
+   <!-- <context:property-placeholder location="classpath:jdbc.properties" />-->
+    <bean id="dataSourceDBCP" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/easybuy?characterEncoding=UTF-8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+        <property name="initialSize" value="5"/>
+        <property name="maxActive" value="20"/>
+        <property name="maxWait" value="10000"/>
+    </bean>
+
+    <!--配置sqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSourceDBCP"/>
+        <!--为某个包下所有类设置别名，默认为类的名称-->
+        <property name="typeAliasesPackage" value="cn.xdd.po"/>
+        <!--配置映射文件路径-->
+        <property name="mapperLocations" value="classpath:mappers/*.xml"/>
+    </bean>
+
+    <!--为dao层映射生成相应的实现类，并交由spring容器管理-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="basePackage" value="cn.xdd.dao"/>
+    </bean>
+</beans>
